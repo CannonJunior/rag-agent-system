@@ -1,0 +1,2 @@
+[console_scripts]
+rag-agent = src.main:main

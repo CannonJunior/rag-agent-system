@@ -1,0 +1,105 @@
+Metadata-Version: 2.4
+Name: rag-agent-system
+Version: 0.1.0
+Summary: RAG agent system with MCP tools and local models
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: sqlalchemy>=2.0.0
+Requires-Dist: asyncpg>=0.28.0
+Requires-Dist: psycopg2-binary>=2.9.0
+Requires-Dist: pgvector>=0.2.0
+Requires-Dist: watchdog>=3.0.0
+Requires-Dist: ollama>=0.2.0
+Requires-Dist: textract>=1.6.0
+Requires-Dist: pypdf>=3.0.0
+Requires-Dist: python-docx>=1.1.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pydantic-settings>=2.0.0
+Requires-Dist: loguru>=0.7.0
+Requires-Dist: click>=8.1.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: aiofiles>=23.0.0
+Requires-Dist: httpx>=0.25.0
+Requires-Dist: mcp>=1.0.0
+Requires-Dist: python-magic>=0.4.27
+Requires-Dist: psutil>=5.9.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: mypy>=1.5.0; extra == "dev"
+Requires-Dist: ruff>=0.0.280; extra == "dev"
+
+# RAG Agent System
+
+A local RAG (Retrieval-Augmented Generation) agent system with MCP tools, PostgreSQL storage, and Ollama integration.
+
+## Features
+
+- **Document Ingestion**: Automatic monitoring and processing of local documents
+- **Vector Storage**: PostgreSQL with pgvector for semantic search
+- **Local Models**: Ollama integration with configurable embedding and LLM models
+- **MCP Tools**: Standardized agent tools for document operations
+- **Async Processing**: Non-blocking file processing and embedding generation
+- **Health Monitoring**: Service health checks and automatic recovery
+
+## Quick Start
+
+1. **Prerequisites**:
+   - Python 3.11+
+   - Docker & Docker Compose
+   - Ollama service running locally
+
+2. **Setup**:
+   ```bash
+   # Install with uv
+   uv sync
+   
+   # Start PostgreSQL
+   docker-compose up -d
+   
+   # Setup environment
+   python scripts/setup.py
+   
+   # Check health
+   python scripts/health_check.py
+   ```
+
+3. **Configuration**: Copy `.env.example` to `.env` and customize settings
+
+4. **Run**: `uv run rag-agent` or `python scripts/mcp_server.py`
+
+## Architecture
+
+- **src/core/**: Configuration, logging, health monitoring
+- **src/database/**: PostgreSQL models and connection management
+- **src/ingest/**: File watching, text extraction, embedding generation
+- **src/agent/**: LLM client and agent logic
+- **src/mcp_tools/**: MCP server and tool implementations
+- **src/utils/**: Ollama management and utilities
+
+## Required Models
+
+- **Embedding**: `nomic-embed-text`
+- **LLM**: `incept5/llama3.1-claude:latest`
+
+Models are automatically pulled during setup if not available.
+
+## Development
+
+```bash
+# Install dev dependencies
+uv sync --dev
+
+# Run tests
+uv run pytest
+
+# Format code
+uv run black src/
+uv run isort src/
+
+# Type checking
+uv run mypy src/
+```
