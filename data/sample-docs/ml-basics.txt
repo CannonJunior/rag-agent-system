@@ -1,0 +1,1 @@
+Machine learning uses algorithms to find patterns in data.

@@ -202,8 +202,10 @@ async def status():
 
 def main():
     """Async main wrapper."""
-    def run_async(coro):
-        return asyncio.run(coro)
+    def run_async(func):
+        def wrapper(*args, **kwargs):
+            return asyncio.run(func(*args, **kwargs))
+        return wrapper
     
     # Make commands async-aware
     for command in [mcp_server, ingest, watch, search, status]:

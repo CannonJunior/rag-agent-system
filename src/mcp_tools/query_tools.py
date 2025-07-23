@@ -1,7 +1,7 @@
 from typing import Dict, Any, List, Optional
 import re
 
-from sqlalchemy import select, func, and_, or_, text, cast, Float
+from sqlalchemy import select, func, and_, or_, text, cast, Float, join
 from loguru import logger
 
 from src.database.connection import db_manager
@@ -51,7 +51,7 @@ class QueryTools:
                     Document.content_type,
                     similarity_expr.label('similarity_score')
                 ).select_from(
-                    DocumentChunk.join(Document, DocumentChunk.document_id == Document.id)
+                    join(DocumentChunk, Document, DocumentChunk.document_id == Document.id)
                 ).where(
                     and_(
                         DocumentChunk.embedding.is_not(None),
@@ -141,7 +141,7 @@ class QueryTools:
                     Document.filepath,
                     Document.content_type
                 ).select_from(
-                    DocumentChunk.join(Document, DocumentChunk.document_id == Document.id)
+                    join(DocumentChunk, Document, DocumentChunk.document_id == Document.id)
                 )
                 
                 # Build search condition
@@ -260,7 +260,7 @@ class QueryTools:
                     Document.content_type,
                     similarity_expr.label('similarity_score')
                 ).select_from(
-                    DocumentChunk.join(Document, DocumentChunk.document_id == Document.id)
+                    join(DocumentChunk, Document, DocumentChunk.document_id == Document.id)
                 ).where(
                     and_(
                         DocumentChunk.id != chunk_id,  # Exclude source chunk
